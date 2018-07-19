@@ -1,0 +1,11 @@
+---
+- name: "installing nginx"
+  apt:
+    name: nginx
+    state: present
+- name: setting up web page
+  copy:
+    src: index.nginx-debian.html
+    dest: /var/www/html/
+  notify:
+    - restart nginx

@@ -1,0 +1,59 @@
+####Issues faced####
+
+>>nginx or apache not opening even after changing port<<
+
+Solution: port was not enabled in firewall settings
+Command: sudo ufw allow portno
+	 sudo ufw status
+
+
+=========================
+
+
+>>Path to place the war file in tomcat<<
+
+Solution: /var/lib/tomcat8/webapps
+
+
+=========================
+
+
+
+
+        postBuildScripts {
+            steps {
+
+	 	shell('mv /var/lib/jenkins/workspace/cicdtest/Spring3HibernateApp/target/Spring3HibernateApp.war   /var/lib/tomcat8/webapps/')
+
+            }
+
+        onlyIfBuildSucceeds(false)
+            onlyIfBuildFails()
+          
+        }
+
+
+
+
+
+
+
+
+
+
+
+==============================================
+=============================================
+
+
+
+day7
+
+
+Assignment 1
+
+How to chage the shell of a user:
+
+
+
+

@@ -1,0 +1,193 @@
+Assignment1:
+
+Create Job DSL for:
+
+a. helloworld Job
+
+Hello world DSL script
+
+job('Hello-World') {
+   steps {
+       shell('echo "Hello, world!"')
+   }
+}
+
+- Using this script, JOB dsl will create another job with name Hello-World given in job('Hello-World')
+- As per the second step, the generated job will print "Hello, world!"
+
+=============================================================================================================
+
+
+
+b. Hellotoperson
+
+job('hellotoperson') {
+   parameters {
+       stringParam('Name', '')
+       choiceParam('OPTION', ['Mr.', 'Ms.', 'Mrs.'])
+   }
+             steps {
+       shell('echo $OPTION $Name')
+   
+   }
+}
+
+
+-- here we can not check the option "This project is parameterised" because it is used for the same job. with job dsl we create a new job so that new job won't know which parameters to take if it's not in the script.
+
+--Make sure to keep seperate name for the job which you are creating through job('hellotoperson') and the original build name.
+--If the name are same the build will replace the existing one.
+--parameters { === tell the newly created build to use parameters and use the parameter type as
+	::stringParam('Name', '')
+        ::choiceParam('OPTION', ['Mr.', 'Ms.', 'Mrs.'])
+--After this the script runs and the actual work is performed
+
+
+=======================================================================================
+
+c. Gitclone
+
+job('Gitclone') 
+
+{
+    scm {
+        
+      git{
+        
+        remote
+        
+         {
+            url('https://github.com/arorah23/Assignments.git')
+        
+         }
+            branch('master')  
+         }
+       }
+
+    steps 
+  
+  	{      
+          
+		shell('ls -la')
+	
+        }
+}
+
+
+--This will clone repo from "https://github.com/arorah23/Assignments.git" and checkout branch master
+--From the steps, it will show the list of files with shell command ls -la
+
+===========================================================================================
+
+d. buildperiodically Job (This job will run by every 5 min)
+
+We need to use cron trigger here
+
+What Jenkins used is a cron expression, the different fields are :
+
+    MINUTES Minutes in one hour (0-59)
+    HOURS Hours in one day (0-23)
+    DAYMONTH Day in a month (1-31)
+    MONTH Month in a year (1-12)
+    DAYWEEK Day of the week (0-7) where 0 and 7 are sunday
+
+
+To allow periodically scheduled tasks to produce even load on the
+system, the symbol H (for “hash”) should be used wherever possible.
+For example, using 0 0 * * * for a dozen daily jobs will cause a large
+spike at midnight. In contrast, using H H * * * would still execute
+each job once a day, but not all at the same time, better using
+limited resources.
+
+code>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+job('Buildperiodically') 
+
+{
+    steps 
+  
+  	{      
+          
+		shell('echo "helloworld"')
+	
+        }
+    triggers
+{
+ cron('h
+/5 * * * *')
+}
+ 
+}
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> 
+
+===================================================================================
+
+
+e. Pollscm
+
+
+
+Poll SCM periodically polls the SCM to check whether changes were made (i.e. new commits) and builds the project if new commits where pushed since the last build, whereas build periodically builds the project periodically even if nothing has changed.
+
+
+
+job('jobname'){
+scm{
+git('repourl') 
+}
+triggers{
+scm('*/2 * * * * ')
+}
+}
+
+======================================================================================
+
+job('upstream1') {
+   steps {
+       shell('echo "this will trigger Hello-World!"')
+   }
+  
+  triggers {
+    
+    upstream('Hello-World')
+      }
+  
+}
+======================================================================================
+
+job("downstream") 
+
+{
+
+parameters {
+       stringParam('Name', '')
+       choiceParam('OPTION', ['Mr.', 'Ms.', 'Mrs.'])
+   }
+     
+steps
+
+       { 
+
+ downstreamParameterized {
+ 
+      trigger('hellotoperson1') {
+
+             parameters {
+                            predefinedProp('Name','$Name')
+               predefinedProp('OPTION','$OPTION')
+			}
+		}
+	}
+       }
+}
+
+
+=========================================================================================
+
+
+
+
+
+
+
+

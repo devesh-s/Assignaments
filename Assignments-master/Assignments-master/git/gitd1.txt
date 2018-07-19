@@ -1,0 +1,41 @@
+
+    Initialize a directory as git repository.=== Git Init
+    Create a blank files like a.txt, b.txt. === touch a.txt b.txt
+    Write "Hi Team Ninja" into a.txt ==== Done
+    Write "This is VCS:Git" into b.txt === done
+    Set git config variables. === Git config --global user.name "name"
+    Commit both files. === Git Commit *.txt
+    Create a branch ninja === git branch Ninja or git checkout -b Ninja
+    Switch into branch ninja === git checkout Ninja
+    Update file b.txt with ""This is VCS:Git. This is ninja branch" === Done
+    Check for the difference made in the file. === git diff --cached filename.txt
+    Commit your changes in ninja branch. === Git commit -m "messgae"
+    Check difference between last two commits. === git diff commitid..commitId
+    Rename your file b.txt to c.txt ma b.txt c.txt // git add c.txt
+    Commit your changes. === git commit -m "message" c.txt
+    Remove file c.txt. === rm c.txt
+    Commit your changes. === git commit -m " message"
+    Create a file text.txt and add it. === touch test.txt // git add text.txt
+    Remove it from the staging area. === git reser HEAD file name or   .
+
+Assignment 2
+
+
+
+    Create a account on github.com. === Done
+    Fork ot-training/git repo into your account. === Done
+    Clone your repo into your machine. === git clone "URL"
+
+
+Assignment 3
+
+
+    Clone your repo into your machine. git clone "URL"
+    Add a file to the attendees directory that describes you (ex. filename wouild be your name like saurabh.vajpayee.txt). === DOne
+    Commit your changes. Write a meaningful message like "Added information about YOUR NAME HERE." === Git commit -m Information added
+    Save your changes into remote repo. === done
+    Check list of changes in your repo. === done
+    Add your name into attendees/assignments/day1/attendees.md === Done
+
+
+

@@ -1,0 +1,43 @@
+---
+ - name: "creating Logical Volumes"
+   hosts: Debian
+   become_user: root
+   tasks:
+    - name: "LVM2 installation"
+      apt:
+        name: lvm2
+        state: present
+
+    - name: "Physical volume with volume group"
+      lvg:
+        vg: day8
+        pvs: /dev/sdb
+        pesize: 2
+        state: present
+
+    - name: "Logical volume"
+      lvol:
+        vg: day8
+        lv: lvolume
+        size: 2M
+        pvs: /dev/sdb
+        active: true
+
+    - name: "Assigning ext4 Filsystem to logical volumes"
+      filesystem:
+        fstype: ext4
+        dev: /dev/day8/lvolume
+      
+    - name: "Creating mount points for logical volumes"
+      file:
+        path: /mnt/mountpt
+        state: directory
+     
+    - name: "Mounting Logical volumes"
+      mount:
+        path: /mnt/mountpt
+        src: /dev/day8/lvolume
+        fstype: ext4
+        fstab: /etc/fstab
+        state: present
+     

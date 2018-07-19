@@ -1,0 +1,39 @@
+---
+- name: "Setting up java"
+  hosts: all
+  become: true
+  become_user: root
+  tasks:
+   - name: "To add Oracle repo"
+     apt_repository:
+       repo: ppa:webupd8team/java
+       state: present
+
+   - name: "Update and upgrade apt packages"
+     apt:
+       update_cache: yes
+       cache_valid_time: 86400
+
+   - name: "auto accept oracle jdk license"
+     debconf:
+       name: "oracle-java8-installer"
+       question: shared/accepted-oracle-license-v1-1
+       value: 'true'
+       vtype: select
+
+   - name: "Setting java home"
+     lineinfile:
+       path: /etc/environment
+       line: "JAVA_HOME=/usr/lib/jvm/java-8-oracle"
+       line: "JRE_HOME=/usr/lib/jvm/java-8-oracle/jre"
+
+   - name: "installing Tomcat"
+     apt:
+       name: tomcat8
+       state: present
+
+   - name: "starting Tomcat"
+     service:
+       name: tomcat8
+       enabled: yes
+       state: started

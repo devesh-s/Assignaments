@@ -1,0 +1,12 @@
+---
+- name: Task to add newly created public key in authorized_keys file of nodes
+  hosts: Debian
+  become_user: root
+  tasks: 
+
+  - name: removing old key and adding new one
+    authorized_key:
+      user: root
+      key: "{{ lookup('file', '/root/.ssh/id_rsa.pub') }}"
+      state: present
+      exclusive: True      

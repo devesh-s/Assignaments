@@ -1,0 +1,40 @@
+---
+- name: creating users with password and providing same permission to directory ninja
+  hosts: Debian
+  become_user: root
+  tasks:
+    - name: creating use group
+      group:
+        name: training
+        state: present
+  
+    - name: creating users
+      user: 
+        name: "{{ item }}"
+        create_home: yes
+        shell: /bin/bash
+        group: training
+        append: yes
+        generate_ssh_key: yes
+        password: welcome1
+      
+      with_items:
+        - usera
+        - userb
+        - userc
+        - userd
+        - usere
+
+    - name: directory creation
+      file: 
+        path: /ninja
+        state: directory
+    - name: setting permission
+      acl:
+       path: /ninja
+       entity: training
+       etype: group
+       permissions: rw
+       default: yes
+       state: present
+

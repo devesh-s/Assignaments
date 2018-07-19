@@ -1,0 +1,43 @@
+---
+- name: "AWS"
+  hosts: localhost
+  gather_facts: true
+  tasks: 
+  - name: "Ctreating Key pair"
+    ec2_key:
+      name: Mykey
+      state: present
+      region: us-east-1
+
+  - name: "Virginia Security Group"
+    ec2_group:
+      name: Virginia
+      description: group to enable ssh
+      vpc_id: vpc-01535471a2aa62c38
+      region: us-east-1 
+      rules:
+       - proto: tcp
+         ports:
+           - 22
+           - 80
+           - 443
+         cidr_ip: 0.0.0.0/0 
+         rule_desc: allow port 80,22 & 443
+  - name: "creating EC2"
+    ec2:
+      key_name: Mykey
+      instance_type: t2.micro
+      image: ami-a4dc46db
+      volumes:
+        - device_name: /dev/sda1
+          volume_type: gp2
+          volume_size: 8
+    
+      instance_tags: 
+          Name: Day5
+      vpc_subnet_id: subnet-0db5a2f7c97a104cc
+      region: us-east-1
+      assign_public_ip: yes
+      count: 1
+
+   

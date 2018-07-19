@@ -1,0 +1,26 @@
+---
+- name: "Building Project"
+  hosts: all
+  become: true
+  become_user: root
+  gather_facts: true
+  tasks:
+   
+   - name: "Downloading Code"
+     git:
+       repo: "https://github.com/OpsTree/ContinuousIntegration.git"
+       dest: /root/ansible5
+       clone: yes
+       update: no
+
+   - name: "maven Installation"
+     apt:
+       name: maven
+       state: latest
+       update_cache: yes
+       cache_valid_time: 8600
+      
+   - name: "Building Artifact" 
+     command: mvn package install
+     args:
+       chdir: /root/ansible5/Spring3HibernateApp 
